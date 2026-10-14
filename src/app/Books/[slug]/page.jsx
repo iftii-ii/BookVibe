@@ -3,12 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import BookActions from "@/components/BookActions";
+
 const getBooks = async () => {
-    const response = await fetch("http://localhost:3000/booksData.json", {
-        cache: "no-store",
-    });
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/booksData.json`,
+        {
+            cache: "no-store",
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch books");
+    }
+
     return response.json();
 };
+
 
 const page = async ({ params }) => {
     const { slug } = await params;
